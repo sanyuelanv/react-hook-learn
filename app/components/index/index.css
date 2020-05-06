@@ -1,0 +1,80 @@
+.app{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+/* filterBox */
+.filterBox{
+  width: 100%;
+  height: 45px;
+  background-color: #f1f1f1;
+  display: flex;
+  align-items: center;
+}
+.filterItem{
+  width: 0;
+  flex: 1;
+  height: 100%;
+  font-size: 14px;
+  color: #555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: capitalize;
+  border-left: 1px solid #ddd;
+}
+.filterItem:first-child{
+  border-left: 0px;
+}
+.filterItemActive{
+  composes:filterItem;
+  color: blue;
+  font-weight: bold;
+  font-size: 16px;
+}
+/* todoList */
+.todoList{
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  background-color: #fff;
+  margin-top: 10px;
+}
+.todoItem{
+  font-size: 14px;
+  line-height: 150%;
+  color: #333;
+  margin: 0 10px;
+  padding: 10px 5px;
+  border-bottom: 1px solid #ddd;
+}
+.todoItemCompleted{
+  composes:todoItem;
+  color: #888;
+  text-decoration: line-through;
+}
+/* addBox */
+.addBox{
+  width: 100%;
+  height: 50px;
+  background-color: #f1f1f1;
+  display: flex;
+}
+.addInput{
+  outline: none;
+  flex: 1;
+  font-size: 16px;
+  margin: 10px;
+  padding: 0 5px;
+  border-radius: 5px;
+  color: #333;
+}
+.addButton{
+  width: 60px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
