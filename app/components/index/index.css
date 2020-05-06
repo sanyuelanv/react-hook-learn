@@ -43,15 +43,23 @@
   margin-top: 10px;
 }
 .todoItem{
-  font-size: 14px;
-  line-height: 150%;
-  color: #333;
   margin: 0 10px;
   padding: 10px 5px;
   border-bottom: 1px solid #ddd;
 }
-.todoItemCompleted{
-  composes:todoItem;
+.todoItemContent{
+  font-size: 16px;
+  line-height: 150%;
+  color: #333;
+}
+.todoItemTime{
+  font-size: 12px;
+  line-height: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+.todoItemContentCompleted{
+  composes:todoItemContent;
   color: #888;
   text-decoration: line-through;
 }

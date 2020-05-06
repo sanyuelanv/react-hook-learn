@@ -9,10 +9,22 @@ export const Index = (): React.ReactElement => {
         <div className={style.filterItem}>已完成</div>
       </div>
       <div className={style.todoList}>
-        <div className={style.todoItem}>事项1</div>
-        <div className={style.todoItem}>事项2</div>
-        <div className={style.todoItem}>事项3事项3事项3事项3事项3事项3事项3事项3事项3事项3事项3</div>
-        <div className={style.todoItemCompleted}>完成事项</div>
+        <div className={style.todoItem}>
+          <div className={style.todoItemContent}>事项1</div>
+          <div className={style.todoItemTime}>2010-10-10 10:00:01</div>
+        </div>
+        <div className={style.todoItem}>
+          <div className={style.todoItemContent}>事项2</div>
+          <div className={style.todoItemTime}>2010-10-10 10:00:02</div>
+        </div>
+        <div className={style.todoItem}>
+          <div className={style.todoItemContent}>事项3事项3事项3事项3事项3事项3事项3事项3事项3事项3事项3</div>
+          <div className={style.todoItemTime}>2010-10-10 10:00:03</div>
+        </div>
+        <div className={style.todoItem}>
+          <div className={style.todoItemContentCompleted}>完成事项</div>
+          <div className={style.todoItemTime}>2010-10-10 10:00:04</div>
+        </div>
       </div>
       <div className={style.addBox}>
         <input className={style.addInput} type='text' />
