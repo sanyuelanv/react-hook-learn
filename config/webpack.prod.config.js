@@ -32,7 +32,7 @@ const config = webpackMerge(commonConfig, {
       }),
       new OptimizeCSSAssetsPlugin({})
     ],
-    runtimeChunk: { name: 'runtime' },
+    // runtimeChunk: { name: 'runtime' },
     splitChunks: {
       chunks: 'all',
       cacheGroups: {

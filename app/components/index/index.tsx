@@ -1,35 +1,39 @@
 import * as React from "react"
+import { cloneDeep } from "lodash"
 import style from './index.css'
+import { useTodoList } from "../../config/index"
+import { FILTERTYPE, TodoItem } from "../../config/interface"
+import { AddBox } from "./addBox"
+import { STORAGE_KEY } from "../../config/help"
+import { Header } from "./header"
+import { List } from "./list"
+
+
 export const Index = (): React.ReactElement => {
+  console.log('Index 渲染')
+  // 数据
+  const [filterType, setFilterType] = React.useState<FILTERTYPE>(FILTERTYPE.all)
+  const [todoList, setTodoList] = useTodoList(STORAGE_KEY, [])
+  // 逻辑
+  const addBtnEvent: (todoItem: TodoItem) => void = (todoItem: TodoItem): void => {
+    // 避免 todoList 不改变,采用函数式改变。
+    // 如果不采用函数式的话会一直不变。因为 addBtnEvent 是需要传入到 AddBox（useMemo） 内部的，但是 todoList 确没有关联 AddBox
+    setTodoList((myTodoList: TodoItem[]): TodoItem[] => {
+      const newTodoList: TodoItem[] = cloneDeep(myTodoList)
+      newTodoList.push(todoItem)
+      return newTodoList
+    })
+  }
   return (
     <div className={style.app}>
-      <div className={style.filterBox}>
-        <div className={style.filterItem}>全部</div>
-        <div className={style.filterItemActive}>未完成</div>
-        <div className={style.filterItem}>已完成</div>
-      </div>
-      <div className={style.todoList}>
-        <div className={style.todoItem}>
-          <div className={style.todoItemContent}>事项1</div>
-          <div className={style.todoItemTime}>2010-10-10 10:00:01</div>
-        </div>
-        <div className={style.todoItem}>
-          <div className={style.todoItemContent}>事项2</div>
-          <div className={style.todoItemTime}>2010-10-10 10:00:02</div>
-        </div>
-        <div className={style.todoItem}>
-          <div className={style.todoItemContent}>事项3事项3事项3事项3事项3事项3事项3事项3事项3事项3事项3</div>
-          <div className={style.todoItemTime}>2010-10-10 10:00:03</div>
-        </div>
-        <div className={style.todoItem}>
-          <div className={style.todoItemContentCompleted}>完成事项</div>
-          <div className={style.todoItemTime}>2010-10-10 10:00:04</div>
-        </div>
-      </div>
-      <div className={style.addBox}>
-        <input className={style.addInput} type='text' />
-        <div className={style.addButton}>添加</div>
-      </div>
+      <Header filterType={filterType} setFilterType={setFilterType} />
+      {/* {renderTodoList()} */}
+      <List
+        filterType={filterType}
+        todoList={todoList}
+        setTodoList={setTodoList}
+      />
+      <AddBox addBtnEvent={addBtnEvent} />
     </div>
   )
 } 
