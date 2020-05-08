@@ -78,7 +78,7 @@
     const [todoList, setTodoList] = React.useState<TodoItem[]>([])
     const [inputContent, setInputContent] = React.useState<string>('')
     // 逻辑
-    const handleInput = (e: React.FormEvent<HTMLInputElement>): void => {
+    const handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
       setInputContent(e.currentTarget.value)
     }
     const handleAddBtn = (): void => {
@@ -174,9 +174,10 @@
   * 组件拆分 & 性能优化
     * 父组件 -（数据）> 子组件 ：Header / List 组件
     * 子组件传递数据给父组件: AddBox 组件
+  * 修改自定义 useState （泛性的使用）
   ```tsx
     /*
-    ├── components （useMeno 的使用）
+    ├── components （useMeno）
     │   └── index
     │       ├── addBox.tsx 拆分出底部的输入框+确认按钮。state 内部独有，只需要父节点提供一个 addTodoItem 函数来把输入内容导出
     │       ├── header.tsx 顶部过滤选项按钮

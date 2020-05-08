@@ -16,7 +16,7 @@ const MyAddBox = (props: AddBoxProps): React.ReactElement => {
   // 数据
   const [inputContent, setInputContent] = React.useState<string>('')
   // 逻辑
-  const handleInput = (e: React.FormEvent<HTMLInputElement>): void => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setInputContent(e.currentTarget.value)
   }
   const handleAddBtn = (): void => {

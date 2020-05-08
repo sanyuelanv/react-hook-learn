@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cloneDeep } from "lodash"
 import style from './index.css'
-import { useTodoList } from "../../config/index"
+import { useStorageValue } from "../../config/index"
 import { FILTERTYPE, TodoItem } from "../../config/interface"
 import { AddBox } from "./addBox"
 import { STORAGE_KEY } from "../../config/help"
@@ -13,7 +13,7 @@ export const Index = (): React.ReactElement => {
   console.log('Index 渲染')
   // 数据
   const [filterType, setFilterType] = React.useState<FILTERTYPE>(FILTERTYPE.all)
-  const [todoList, setTodoList] = useTodoList(STORAGE_KEY, [])
+  const [todoList, setTodoList] = useStorageValue<TodoItem[]>(STORAGE_KEY, [])
   // 逻辑
   const addBtnEvent: (todoItem: TodoItem) => void = (todoItem: TodoItem): void => {
     // 避免 todoList 不改变,采用函数式改变。
