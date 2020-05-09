@@ -7,8 +7,8 @@ interface ListProps {
   filterType: FILTERTYPE;
   setTodoList: React.Dispatch<React.SetStateAction<TodoItem[]>>;
 }
-const MyList = (props: ListProps): React.ReactElement => {
-  console.log('List 渲染')
+const MyList: React.FC<ListProps> = (props: ListProps): React.ReactElement => {
+  console.log('-- List 渲染')
   const handleChangeItemState = (e: React.MouseEvent<HTMLDivElement>): void => {
     const ele: HTMLDivElement = e.target as HTMLDivElement
     const index: string | null = ele.getAttribute('data-index')
@@ -49,7 +49,7 @@ const MyList = (props: ListProps): React.ReactElement => {
     <div onClick={handleChangeItemState} className={style.todoList}> {arr} </div>
   )
 }
-export const List = (props: ListProps): React.ReactElement => {
+export const List: React.FC<ListProps> = (props: ListProps): React.ReactElement => {
   return React.useMemo(() => {
     return <MyList {...props} />
   }, [props.filterType, props.todoList])
