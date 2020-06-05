@@ -12,3 +12,12 @@ export const formatDate = (date: Date): string => {
   const s = needAddZero(date.getSeconds())
   return `${Y}-${M}-${D} ${h}:${m}:${s}`
 }
+
+export const getByLocalStorage = <T>(key: string, def: T): T => {
+  try {
+    const storageValue = window.localStorage.getItem(key)
+    return storageValue ? JSON.parse(storageValue) as T : def
+  } catch (error) {
+    return def
+  }
+}

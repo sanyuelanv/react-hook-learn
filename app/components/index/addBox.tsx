@@ -3,31 +3,27 @@ import style from './index.css'
 import { formatDate } from "../../config/help"
 import { cloneDeep } from "lodash"
 import { TodoItem, FILTERTYPE } from "../../config/interface"
+import { useSetRecoilState } from "recoil"
+import { todoListState } from "../../recoil"
 
-interface AddBoxProps {
-  setTodoList: React.Dispatch<React.SetStateAction<TodoItem[]>>;
-}
-/*
- 该组件无须接收上层组件的数据，只需要把数据返回给上一层
- 如果 把 MyAddBox 变成 AddBox export 给 index 用的话
- console.log('AddBox 渲染') 的执行情况会怎么样
-*/
-const MyAddBox: React.FC<AddBoxProps> = (props: AddBoxProps): React.ReactElement => {
+export const AddBox: React.FC = (): React.ReactElement => {
   console.log('-- AddBox 渲染')
   // 数据
   const [inputContent, setInputContent] = React.useState<string>('')
+  const setTodoList = useSetRecoilState(todoListState)
   // 逻辑
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setInputContent(e.currentTarget.value)
   }
   const handleAddBtn = (): void => {
+    if(inputContent.length <= 0) return
     const newTodoItem: TodoItem = {
       content: inputContent,
       type: FILTERTYPE.active,
       ts: formatDate(new Date())
     }
     setInputContent('')
-    props.setTodoList((myTodoList: TodoItem[]): TodoItem[] => {
+    setTodoList((myTodoList: TodoItem[]): TodoItem[] => {
       const newTodoList: TodoItem[] = cloneDeep(myTodoList)
       newTodoList.push(newTodoItem)
       return newTodoList
@@ -50,9 +46,4 @@ const MyAddBox: React.FC<AddBoxProps> = (props: AddBoxProps): React.ReactElement
       <div onClick={handleAddBtn} className={style.addButton}>添加</div>
     </div>
   )
-}
-export const AddBox: React.FC<AddBoxProps> = (props: AddBoxProps): React.ReactElement => {
-  return React.useMemo(() => {
-    return <MyAddBox {...props} />
-  }, [])
 }

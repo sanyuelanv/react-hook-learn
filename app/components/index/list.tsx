@@ -2,55 +2,47 @@ import * as React from 'react'
 import { cloneDeep } from "lodash"
 import style from './index.css'
 import { TodoItem, FILTERTYPE } from '../../config/interface'
-interface ListProps {
-  todoList: TodoItem[];
-  filterType: FILTERTYPE;
-  setTodoList: React.Dispatch<React.SetStateAction<TodoItem[]>>;
-}
-const MyList: React.FC<ListProps> = (props: ListProps): React.ReactElement => {
+import { filterTodoListState, todoListState } from '../../recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+// import { AppContext } from '../../store'
+export const List: React.FC = (): React.ReactElement => {
   console.log('-- List 渲染')
+  const arr: React.ReactElement[] = []
+  const setTodoList = useSetRecoilState(todoListState)
+  // setToDoList
+  const todoList: TodoItem[] = useRecoilValue(filterTodoListState)
   const handleChangeItemState = (e: React.MouseEvent<HTMLDivElement>): void => {
     const ele: HTMLDivElement = e.target as HTMLDivElement
     const index: string | null = ele.getAttribute('data-index')
     if (index != null) {
       const pos = Number(index)
-      const newTodoList: TodoItem[] = cloneDeep(props.todoList)
-      newTodoList[pos].type = newTodoList[pos].type == FILTERTYPE.active ? FILTERTYPE.completed : FILTERTYPE.active
-      props.setTodoList(newTodoList)
+      setTodoList((list: TodoItem[]): TodoItem[] => {
+        const newTodoList: TodoItem[] = cloneDeep(list)
+        const currentItem: TodoItem = todoList[pos]
+        for (let index = 0; index < newTodoList.length; index++) {
+          const item: TodoItem = newTodoList[index]
+          if (item.ts == currentItem.ts && item.content == currentItem.content && item.type == currentItem.type) {
+            item.type = item.type == FILTERTYPE.active ? FILTERTYPE.completed : FILTERTYPE.active
+          }
+        }
+        return newTodoList
+      })
     }
   }
-  const arr: React.ReactElement[] = []
-  for (let index = props.todoList.length - 1; index >= 0; index--) {
-    const item: TodoItem = props.todoList[index]
-    let className = style.todoItemContent
-    let flag = true
-    if ((props.filterType == FILTERTYPE.active && item.type == FILTERTYPE.completed) || props.filterType == FILTERTYPE.completed && item.type == FILTERTYPE.active) {
-      flag = false
-    }
-
-    if (flag) {
-      if (item.type == FILTERTYPE.completed) {
-        className = style.todoItemContentCompleted
-      }
-      arr.push(
-        <div
-          data-index={index}
-          key={index}
-          className={style.todoItem}
-        >
-          <div className={className}>{item.content}</div>
-          <div className={style.todoItemTime}>{item.ts}</div>
-        </div>
-      )
-    }
-
+  for (let index = todoList.length - 1; index >= 0; index--) {
+    const item: TodoItem = todoList[index]
+    arr.push(
+      <div
+        data-index={index}
+        key={index}
+        className={style.todoItem}
+      >
+        <div className={item.type == FILTERTYPE.completed ? style.todoItemContentCompleted : style.todoItemContent}>{item.content}</div>
+        <div className={style.todoItemTime}>{item.ts}</div>
+      </div>
+    )
   }
   return (
     <div onClick={handleChangeItemState} className={style.todoList}> {arr} </div>
   )
-}
-export const List: React.FC<ListProps> = (props: ListProps): React.ReactElement => {
-  return React.useMemo(() => {
-    return <MyList {...props} />
-  }, [props.filterType, props.todoList])
 }

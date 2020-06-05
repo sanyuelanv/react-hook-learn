@@ -1,6 +1,7 @@
 const commonConfig = require('./webpack.common.config')
 const webpackMerge = require('webpack-merge')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
@@ -20,16 +21,29 @@ const config = webpackMerge(commonConfig, {
     filename: assestPathName + `/[name].js`
   },
   optimization: {
+    minimize: true,
     minimizer: [
-      new UglifyJsPlugin({
+      new TerserPlugin({
+        extractComments: false,
         cache: true,
         parallel: true,
-        sourceMap: true,
-        uglifyOptions: {
-          compress: { drop_console: true },
-          output: { comments: false }
+        sourceMap: false,
+        terserOptions: {
+          extractComments: 'all',
+          compress: {
+            drop_console: true,
+          },
         }
       }),
+      // new UglifyJsPlugin({
+      //   cache: true,
+      //   parallel: true,
+      //   sourceMap: true,
+      //   uglifyOptions: {
+      //     compress: { drop_console: true },
+      //     output: { comments: false }
+      //   }
+      // }),
       new OptimizeCSSAssetsPlugin({})
     ],
     // runtimeChunk: { name: 'runtime' },
